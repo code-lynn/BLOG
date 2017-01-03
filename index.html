@@ -2,46 +2,78 @@
 <html lang="en" ng-app="appModule">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-<!--     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css"> -->
-     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+    <title>个人博客</title>
+<link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+     <!--<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">-->
+    <!--<link rel="stylesheet" href="less/reset.min.css">-->
+    <link rel="stylesheet/less" href="less/index.less">
+    <script src="js/less-2.5.3.min.js"></script>
 </head>
 <body>
 <div class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="#/" class="navbar-brand">图书商店</a>
-            <!-- #/ 不跳转页面 在本页面？？？-->
-        </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li><a href="#/">首页</a></li>
-                <li><a href="#/bookList">列表页</a></li>
-                <li><a href="#/bookAdd">增加图书</a></li>
-            </ul>
+    <div class="w">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="#/" class="navbar-brand">BLOG</a>
+                <!-- #/ 不跳转页面 在本页面-->
+            </div>
+            <div>
+                <ul class="nav navbar-nav">
+                    <li><a href="#/">ABOUT</a></li>
+                    <li><a href="#/program">PROGRAM</a></li>
+                    <li><a href="#/media">MEDIA</a></li>
+                    <li><a href="#/contact">CONTACT</a></li>
+                    <li><a href="#/bookList">MYBOOK</a></li>
+                    <li><a href="#/search">SEARCH</a></li>
+                    <li><a href="#/login">LOGIN</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
-<!--ng-view与template相对应，将模板中内容插入到ng-view的标签中-->
-<!--通过HASH(锚点)实现路径的更改调用不同的逻辑，不会刷新页面，而且会产生历史管理-->
-<!--<ng-view></ng-view>-->
-<div ng-view="" class="container"></div>
-<!---->
-<!-- <script src="node_modules/angular/angular.js"></script>
+
+<div class="w">
+    <div class="container col-md-2 left">
+        <!--<div class="logo">
+            <img src="" alt="">
+        </div>-->
+        <div class=" menu">
+            <ul class="nav list-group-item-success">
+                <li class="list-group-item-success"><a href="#/bookList">html+css</a></li>
+                <li class="list-group-item-success"><a href="#/bookList">javascript</a></li>
+                <li class="list-group-item-success"><a href="#/bookList">angular</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--ng-view与template相对应，将模板中内容插入到ng-view的标签中-->
+    <!--通过HASH(锚点)实现路径的更改调用不同的逻辑，不会刷新页面，而且会产生历史管理-->
+    <!--<ng-view></ng-view>-->
+    <div ng-view="" class="container col-md-10" ng-controller="json"></div>
+</div>
+<!--本地引用-->
+ <script src="node_modules/angular/angular.js"></script>
 <script src="node_modules/angular-resource/angular-resource.js"></script>
-<script src="node_modules/angular-route/angular-route.js"></script> -->
-<script src="//cdn.bootcss.com/angular.js/1.5.9/angular.js"></script>
+<script src="node_modules/angular-route/angular-route.js"></script>
+<!--引用CDN-->
+<!--<script src="//cdn.bootcss.com/angular.js/1.5.9/angular.js"></script>
 <script src="//cdn.bootcss.com/angular.js/1.5.9/angular-route.js"></script>
-<script src="//cdn.bootcss.com/angular.js/1.5.9/angular-resource.js"></script>
+<script src="//cdn.bootcss.com/angular.js/1.5.9/angular-resource.js"></script>-->
     
 <script>
     var app=angular.module('appModule',['ngResource','ngRoute']);//先写路由--
+
     // 'ngResource'用在服务中提供不同接口的不同请求方法，'ngRoute'--app.config配置路由使用$routeProvider
     app.factory('$book',function ($resource) {//$resource？？？？
         return $resource('/books/:id',null,{ //服务接口/books/:id 中的 :占位符
             update:{method:'PUT'}
         })
     });
+
+    //book指令-存放数据
+    app.controller('json',['$scope','$book','$rootScope',function ($scope,$book,$rootScope) {
+        $rootScope.lists=[{"id":1,"bookName":"angular权威教程1","bookPrice":300,"bookCover":"http://img3x5.ddimg.cn/4/13/23541115-1_w_1.jpg"},{"id":2,"bookName":"国美","bookPrice":400,"bookCover":"https://js.meixincdn.com/m/pc/dist/images/public/logo.png"},{"id":3,"bookName":"angular权威教程3","bookPrice":500,"bookCover":"http://img3x5.ddimg.cn/4/13/23541115-1_w_1.jpg"},{"bookName":"2223324","bookCover":"http://img3x5.ddimg.cn/4/13/23541115-1_w_1.jpg234","bookPrice":"2222","id":4}];
+    }]);
 
     /*路由中的服务是配置使用，不是调用*/
     app.config(function ($routeProvider) {
@@ -58,33 +90,66 @@
             //:bookId占位符,$routeParams模糊匹配,/bookDetail/2 -->$routeParams:{bookId:2}
             templateUrl:'temple/bookDetail.html',
             controller:'detailCtrl'
+        }).when('/login',{
+            templateUrl:'temple/login.html',
+//            controller:'loginCtrl'
+        }).when('/contact',{
+            templateUrl:'temple/contact.html',
+//            controller:'contactCtrl'
+        }).when('/program',{
+            templateUrl:'temple/program.html',
+//            controller:'programCtrl'
+        }).when('/media',{
+            templateUrl:'temple/media.html',
+            controller:'mediaCtrl'
         }).otherwise('/');//其他条件不识别的都为/
     });
     /*前后端分离：服务器只通过url提供页面和数据，并没有提供跳转，跳转是通过前端的路由实现的-HASH值
     * 前端实现跳转页面后，由前端的路由默认发送的请求，后台根据url返回相应的页面或数据*/
-    app.controller('indexCtrl',['$scope',function ($scope) {
-        $scope.name='珠峰书店';
+
+//    首页
+    app.controller('indexCtrl',['$scope','$rootScope',function ($scope,$rootScope) {
+        $scope.name='个人博客';
     }]);
-    app.controller('addCtrl',['$scope','$book','$location',function ($scope,$book,$location) {
-        /*保存数据*/
-        $scope.saveBook=function () { //模块ngRoute中的$location的服务相当于window.location.href
+
+    //添加页
+    app.controller('addCtrl',['$scope','$book','$location','$rootScope',function ($scope,$book,$location,$rootScope) {
+        /*//启动服务server.js时，保存数据*/
+       /* $scope.saveBook=function () { //模块ngRoute中的$location的服务相当于window.location.href
             $book.save($scope.book).$promise.then(function (data) {
                 $location.path('/bookList');//重定向？？？
             });
             //保存完成，跳转页面
+        }*/
+       //静态页面时
+        $scope.saveBook=function () {
+            $location.path('/bookList');
+//            console.log($scope.book)
+            $scope.$watch($rootScope.lists,function(newVal,oldVal){
+                $rootScope.lists.push($scope.book);
+            })
         }
-    }]);
+        }]);
+
+    //列表页
     app.controller('listCtrl',['$scope','$book',function ($scope,$book) {
-        //将数据获取到渲染到页面
-        $scope.lists=$book.query();
+        ////启动服务server.js时，将数据获取到渲染到页面
+        //方法一：
+//        $scope.lists=$book.query();
 //        console.log($scope.lists);
+        //方法二：
         /*$book.query().$promise.then(function (data) {
             //data就是后台返回的数据
             $scope.lists=data;
         })*/
+        //静态页面时：去根作用域拿数据
+//        $scope.list=$rootScope.lists;//??？？？？拿不到
     }]);
-    app.controller('detailCtrl',['$scope','$routeParams','$book','$location',function ($scope,$routeParams,$book,$location) {
-        var bookId=$routeParams.bookId;
+
+    //详情页
+    app.controller('detailCtrl',['$scope','$routeParams','$book','$location','$rootScope',function ($scope,$routeParams,$book,$location,$rootScope) {
+        //启动服务server.js时
+       /* var bookId=$routeParams.bookId;
         $book.get({id:bookId}).$promise.then(function (data) {
             //防止上下联动
             $scope.newBook=JSON.parse(JSON.stringify(data));
@@ -97,22 +162,68 @@
                 $location.path('/bookList');
             });
         };
-        /**/
+        /!*取消修改*!/
         $scope.flag=true;
 
         $scope.cancelBook = function () {
                 $scope.flag = true;//可能点击取消之前有改动在将最后的值重新绑定一下
             $scope.newBook = JSON.parse(JSON.stringify($scope.book));
         };
-
+        /!*修改*!/
         $scope.updateBook=function () {
             $book.update({id:bookId},$scope.newBook).$promise.then(function (data) {
                 //get(id) save(项) delete(id) update(id,项)的传参？？？
                 $scope.flag=true;
                 $scope.book=data;
             })
+        }*/
+
+       //静态页面时
+        var bookId=$routeParams.bookId;
+        var data=$rootScope.lists[bookId-1];
+        $scope.newBook=JSON.parse(JSON.stringify(data));
+        $scope.book=data;
+        //删除
+        $scope.remove=function (bookId) {
+            $rootScope.lists=$rootScope.lists.filter(function (item) {
+               return item.id!==bookId;
+            });
+            //$scope.lists=$rootScope.lists;
+            $location.path('/bookList');
+        };
+        //取消修改
+        $scope.flag=true;
+        $scope.cancelBook = function () {
+            $scope.flag = true;
+            $scope.newBook=JSON.parse(JSON.stringify(data));
+        };
+        //修改
+        $scope.updateBook=function () {
+            $rootScope.lists=$rootScope.lists.map(function (item) {
+                if(item.id==bookId){
+                    item=$scope.newBook
+                }
+                return item;
+            });
+            $scope.flag=true;
+            $scope.book=$rootScope.lists[bookId-1];
         }
     }])
+
+    //midia
+    app.controller('mediaCtrl',['$scope','$http',function ($scope,$http) {
+        var myUrl = "https://route.showapi.com/213-4?showapi_appid=26601&topid=26&showapi_sign=adc05e2062a5402b81c563a3ced09208";
+        $http.get(myUrl).success(function (data) {
+            if(data.showapi_res_code==0){
+                var m_data=data.showapi_res_body.pagebean.songlist;
+                var m_ary=[];
+                for(var i=0;i<9;i++){
+                   m_ary.push(m_data[i]);
+                }
+                $scope.musicLists=m_ary;
+            }
+        });
+    }]);
 </script>
 </body>
 </html>

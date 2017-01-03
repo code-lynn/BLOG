@@ -12,7 +12,27 @@
     </div>
 </div>-->
 
+<style>
+    .panel{
+        padding: 5px;
+    }
+    .panel-body{
+         padding:0;
 
+    }
+    .btn{
+        margin: 5px;
+    }
+    .btn_bg{
+        background:#f4f4f4;
+    }
+</style>
+<div class=" panel-success col-md-12 btn_bg">
+    <div class="panel-body text-center">
+        <a class="btn btn-danger " href="#/bookAdd">添加图书</a>
+    </div>
+
+</div>
 <div class="panel panel-success col-md-4" ng-repeat="book in lists track by $index">
     <!--col-md-4 列col-md-offset-1 间距-->
     <div class="panel-heading">{{book.bookName}}</div>
@@ -22,7 +42,7 @@
     </div>
     <div class="panel-footer">
         价格 {{book.bookPrice | currency:'$'}}
-        <a class="btn btn-default" href="#/bookDetail/{{book.id}}">跳转详情</a>
+        <a class="btn btn-danger" href="#/bookDetail/{{book.id}}">跳转详情</a>
     </div>
 </div>
 

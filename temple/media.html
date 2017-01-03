@@ -1,0 +1,35 @@
+
+
+<div class="panel panel-success col-md-4" ng-repeat="music in musicLists track by $index">
+    <div class="panel-heading h_text">{{music.songname}}</div>
+    <div class="panel-body text-center">
+        <img ng-src="{{music.albumpic_big}}" alt="">
+    </div>
+    <div class="panel-footer">
+        <audio src="{{music.url}}" loop controls preload="none" id="{{music.albumid}}"></audio>
+    </div>
+</div>
+
+<style>
+    .panel{
+        padding: 5px;
+    }
+    .panel-body{
+        padding:0;
+
+    }
+    img{width: 250px;height:250px;background: gray}
+    audio{
+        width: 200px;
+        height: 30px;
+    }
+    .h_text{
+        overflow: hidden; /*自动隐藏文字*/
+        text-overflow: ellipsis;/*文字隐藏后添加省略号*/
+        white-space: nowrap;/*强制不换行*/
+        color:#6699ff;border:1px #ff8000 dashed;
+    }
+    .h_text:hover{
+        text-overflow: clip;
+    }
+</style>
